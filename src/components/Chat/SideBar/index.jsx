@@ -4,7 +4,7 @@ import Channels from "./Channels";
 import Footer from "./Footer";
 
 const SideBar = ({ isModalOpen, setIsModalOpen }) => (
-  <div className="grid grid-rows-[auto,1fr,auto] h-screen w-1/12 w mx-2 border-r border-purple_dark">
+  <div className="grid grid-rows-[auto,1fr,auto] h-screen w-p10 w mx-2 border-r border-purple_dark">
     <div className="border-b border-purple_dark">
       <Header />
     </div>

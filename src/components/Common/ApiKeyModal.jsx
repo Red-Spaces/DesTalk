@@ -10,7 +10,7 @@ const ApiKeyModal = ({ isModalOpen, setIsModalOpen }) => {
 
   const handleOk = () => {
     setItem(API_KEY_NAME, apiKey);
-    setIsModalOpen(false);
+    window.location.reload();
   };
 
   const handleCancel = () => {

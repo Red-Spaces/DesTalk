@@ -9,6 +9,9 @@ module.exports = {
         purple_light: "#cea2fd",
         purple_lighter: "#fff0f5",
       },
+      width: {
+        p10: "10%",
+      },
     },
   },
   plugins: [],
