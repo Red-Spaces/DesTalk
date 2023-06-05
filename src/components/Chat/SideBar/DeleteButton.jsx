@@ -5,7 +5,7 @@ import { Button } from "antd";
 import dbOperations from "../db";
 import { toast } from "react-toastify";
 
-const DeleteButton = ({ channelId, fetchChannels }) => {
+const DeleteButton = ({ channelId, fetchChannels, setChannelId }) => {
   const [deleteChannel, setDeleteChannel] = useState(false);
   const { deleteChannel: deleteConversation } = dbOperations;
 
@@ -13,6 +13,7 @@ const DeleteButton = ({ channelId, fetchChannels }) => {
     e.stopPropagation();
     try {
       await deleteConversation(channelId);
+      setChannelId(null);
       fetchChannels();
     } catch (err) {
       toast.error("Error deleting channel");

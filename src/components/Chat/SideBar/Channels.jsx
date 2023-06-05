@@ -35,7 +35,11 @@ const Channels = ({ setChannelId, channelId }) => {
               {channel.name}
             </Typography>
           </div>
-          <DeleteButton channelId={channel.id} fetchChannels={fetchChannels} />
+          <DeleteButton
+            channelId={channel.id}
+            fetchChannels={fetchChannels}
+            setChannelId={setChannelId}
+          />
         </Button>
       ))}
     </div>
