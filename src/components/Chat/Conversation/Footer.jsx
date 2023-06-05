@@ -4,6 +4,7 @@ import dbOperations from "../db";
 import { toast } from "react-toastify";
 import gpt from "../useGPT";
 import { FiSend } from "react-icons/fi";
+import { CiRedo } from "react-icons/ci";
 
 const { TextArea } = Input;
 
@@ -57,6 +58,25 @@ const Footer = ({
     }
   };
 
+  const regenerateResponse = async () => {
+    setIsLoadingResponse(true);
+    try {
+      const regenerationPrompt = [
+        ...sanitizedConversation,
+        { content: "Regenerate the last response", role: "user" },
+      ];
+      const gptResponse = await getCompletion(regenerationPrompt, channelId);
+      setSanitizedConversation([
+        ...sanitizedConversation,
+        { content: gptResponse, role: "system" },
+      ]);
+    } catch (err) {
+      toast.error("Error regenerating response");
+    } finally {
+      setIsLoadingResponse(false);
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && !e.shiftKey) {
       sendMessage(e);
@@ -66,6 +86,19 @@ const Footer = ({
 
   return (
     <div className="absolute bottom-0 left-0 w-full pt-2">
+      {channelId && (
+        <div className="px-3 pt-2 pb-3 text-center text-xs text-purple_dark md:px-4 md:pt-3 md:pb-6">
+          <Button
+            icon={<CiRedo size="14" />}
+            type="secondary"
+            size="large"
+            onClick={regenerateResponse}
+            className="border border-1 rounded-lg text-purple_lighter border-purple_dark hover:bg-purple_dark"
+          >
+            Regenerate response
+          </Button>
+        </div>
+      )}
       <form className="stretch mx-2 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl">
         <div className="h-full">
           <div className="bg-purple_dark rounded-md border border-purple_darker flex">
