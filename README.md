@@ -1,5 +1,7 @@
 # DesTalk
 
+![publish](https://github.com/Red-Spaces/DesTalk/actions/workflows/release.yml/badge.svg?branch=stable)
+
 DesTalk is a ChatGPT clone that works with OpenAI's API key.
 
 ## Installation
