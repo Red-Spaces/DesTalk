@@ -56,7 +56,7 @@ const ApiKeyModal = ({ isModalOpen, setIsModalOpen }) => {
           You can get the API key{" "}
           <a
             href="https://platform.openai.com/account/api-keys"
-            target="_blank noopener noreferrer"
+            target="_blank"
           >
             here
           </a>

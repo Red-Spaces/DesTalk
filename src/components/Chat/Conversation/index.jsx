@@ -69,7 +69,7 @@ const Conversation = ({
   return (
     <div className="relative h-full flex flex-col overflow-hidden w-full">
       {!showSidebar && (
-        <div className="m-2">
+        <div className="m-2 absolute">
           <SideBarButton
             setShowSidebar={setShowSidebar}
             showSidebar={showSidebar}

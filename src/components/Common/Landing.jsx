@@ -22,7 +22,7 @@ const Landing = () => {
               Enter your OpenAI API key. You can get it from{" "}
               <a
                 href="https://platform.openai.com/account/api-keys"
-                target="_blank noopener noreferrer"
+                target="_blank"
               >
                 here
               </a>

@@ -86,7 +86,7 @@ const Footer = ({
 
   return (
     <div className="absolute bottom-0 left-0 w-full pt-2">
-      {channelId && (
+      {channelId && !isLoadingResponse && (
         <div className="px-3 pt-2 pb-3 text-center text-xs text-purple_dark md:px-4 md:pt-3 md:pb-6">
           <Button
             icon={<CiRedo size="14" />}
