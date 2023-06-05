@@ -8,6 +8,7 @@ import { API_KEY_NAME } from "../../constants";
 const Chat = () => {
   const apiKey = getItem(API_KEY_NAME);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(!apiKey);
+  const [showSidebar, setShowSidebar] = useState(true);
   const [channelId, setChannelId] = useState(null);
 
   return (
@@ -17,8 +18,15 @@ const Chat = () => {
         setIsModalOpen={setIsApiKeyModalOpen}
         setChannelId={setChannelId}
         channelId={channelId}
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
       />
-      <Conversation channelId={channelId} setChannelId={setChannelId} />
+      <Conversation
+        channelId={channelId}
+        setChannelId={setChannelId}
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
+      />
       {isApiKeyModalOpen && (
         <ApiKeyModal
           isModalOpen={isApiKeyModalOpen}

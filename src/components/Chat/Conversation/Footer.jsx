@@ -1,8 +1,9 @@
 import React from "react";
-import { Input } from "antd";
+import { Input, Button } from "antd";
 import dbOperations from "../db";
 import { toast } from "react-toastify";
 import gpt from "../useGPT";
+import { FiSend } from "react-icons/fi";
 
 const { TextArea } = Input;
 
@@ -56,20 +57,36 @@ const Footer = ({
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode == 13 && !e.shiftKey) {
+      sendMessage(e);
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="absolute bottom-0 left-0 w-full pt-2">
       <form className="stretch mx-2 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl">
-        <div className="h-full  ">
-          <div className="bg-purple_dark rounded-md border border-purple_darker">
+        <div className="h-full">
+          <div className="bg-purple_dark rounded-md border border-purple_darker flex">
             <TextArea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onPressEnter={(e) => sendMessage(e)}
+              onKeyDown={handleKeyDown}
               placeholder="Send a message."
               autoSize={{ minRows: 1, maxRows: 5 }}
               bordered={false}
               className="m-0 w-full resize-none border-0 bg-transparent p-2 text-purple_lighter"
               disabled={isLoadingResponse}
+            />
+            <Button
+              disabled={isLoadingResponse || message?.trim().length === 0}
+              onClick={sendMessage}
+              type="text"
+              className="mr-1"
+              icon={
+                <FiSend className="text-purple_lighter m-1 w-5 h-5 hover:text-purple_darker" />
+              }
             />
           </div>
         </div>

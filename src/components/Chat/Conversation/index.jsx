@@ -7,8 +7,14 @@ import NewChat from "./NewChat";
 import Message from "./Message";
 import dbOperations from "../db";
 import { scrollToBottom } from "./utils";
+import SideBarButton from "../../Common/SideBarButton";
 
-const Conversation = ({ channelId, setChannelId }) => {
+const Conversation = ({
+  channelId,
+  setChannelId,
+  showSidebar,
+  setShowSidebar,
+}) => {
   const bottomOfChatRef = useRef(null);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
@@ -61,7 +67,15 @@ const Conversation = ({ channelId, setChannelId }) => {
   }, [channelId]);
 
   return (
-    <div className="relative h-full flex flex-col overflow-hidden w-11/12">
+    <div className="relative h-full flex flex-col overflow-hidden w-full">
+      {!showSidebar && (
+        <div className="m-2">
+          <SideBarButton
+            setShowSidebar={setShowSidebar}
+            showSidebar={showSidebar}
+          />
+        </div>
+      )}
       <div className="overflow-scroll h-full">
         {!channelId ? (
           <NewChat />

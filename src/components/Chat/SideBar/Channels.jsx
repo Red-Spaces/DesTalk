@@ -25,7 +25,7 @@ const Channels = ({ setChannelId, channelId }) => {
           className={`border flex border-1 rounded-lg text-purple_lighter border-purple_dark w-full hover:bg-purple_dark ${
             channel.id === channelId && "bg-purple_dark"
           }`}
-          icon={<TbMessages size="14" />}
+          icon={<TbMessages size="14" className="mt-1" />}
           onClick={() => setChannelId(channel.id)}
         >
           <Typography className="text-purple_lighter text-ellipsis overflow-hidden">
