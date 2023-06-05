@@ -24,6 +24,9 @@ const getCompletion = async (messages, channelId) => {
     await insertMessage(channelId, completionText, false);
     return completionText;
   } catch (error) {
+    if (error.response.status === 401) {
+      toast.error("Invalid API key");
+    }
     toast.error(error.message);
     return null;
   }

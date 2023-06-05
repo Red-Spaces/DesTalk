@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 
 import { TbMessages } from "react-icons/tb";
+import { FiDelete } from "react-icons/fi";
 import { Button, Typography } from "antd";
 import dbOperations from "../db";
+import DeleteButton from "./DeleteButton";
 
 const Channels = ({ setChannelId, channelId }) => {
   const [channels, setChannels] = useState([]);
   const { getChannels } = dbOperations;
 
+  const fetchChannels = async () => {
+    const channels = await getChannels();
+    setChannels(channels);
+  };
   useEffect(() => {
-    const fetchChannels = async () => {
-      const channels = await getChannels();
-      setChannels(channels);
-    };
     fetchChannels();
   });
 
@@ -28,9 +30,12 @@ const Channels = ({ setChannelId, channelId }) => {
           icon={<TbMessages size="14" className="mt-1" />}
           onClick={() => setChannelId(channel.id)}
         >
-          <Typography className="text-purple_lighter text-ellipsis overflow-hidden">
-            {channel.name}
-          </Typography>
+          <div className="w-3/4 text-left">
+            <Typography className="text-purple_lighter text-ellipsis overflow-hidden">
+              {channel.name}
+            </Typography>
+          </div>
+          <DeleteButton channelId={channel.id} fetchChannels={fetchChannels} />
         </Button>
       ))}
     </div>

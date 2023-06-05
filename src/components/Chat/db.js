@@ -64,7 +64,6 @@ const insertChannel = async (name) => {
   store.add(channel);
   await tx.complete;
 
-  console.log("Channel inserted successfully");
   return channel.id;
 };
 
@@ -144,11 +143,32 @@ const getChannels = async () => {
   });
 };
 
+const deleteChannel = async (channelId) => {
+  const db = await openDatabase();
+  const tx = db.transaction(["channels", "messages"], "readwrite");
+  const channelsStore = tx.objectStore("channels");
+  const messagesStore = tx.objectStore("messages");
+  const indexedMessages = messagesStore.index("channel_id");
+  const request = indexedMessages.openCursor(IDBKeyRange.only(channelId));
+
+  request.onsuccess = (event) => {
+    const cursor = event.target.result;
+    if (cursor) {
+      messagesStore.delete(cursor.primaryKey);
+      cursor.continue();
+    }
+    channelsStore.delete(channelId);
+  };
+
+  await tx.complete;
+};
+
 const dbOperations = {
   insertChannel,
   insertMessage,
   getMessagesByChannel,
   getChannels,
+  deleteChannel,
 };
 
 export default dbOperations;
