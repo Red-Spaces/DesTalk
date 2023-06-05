@@ -125,7 +125,7 @@ const Footer = ({
         </div>
       </form>
       <div className="px-3 pt-2 pb-3 text-center text-xs text-purple_dark md:px-4 md:pt-3 md:pb-6">
-        <span>AppGPT is powered by OpenAI's GPT API</span>
+        <span>DesTalk is powered by OpenAI's API</span>
       </div>
     </div>
   );
