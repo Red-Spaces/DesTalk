@@ -5,37 +5,16 @@ import Footer from "./Footer";
 import NewChat from "./NewChat";
 
 import Message from "./Message";
+import dbOperations from "../db";
+import { scrollToBottom } from "./utils";
 
-const Chat = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("test");
-  const [showEmptyChat, setShowEmptyChat] = useState(false);
+const Conversation = ({ channelId, setChannelId }) => {
   const bottomOfChatRef = useRef(null);
-  const [conversation, setConversation] = useState([
-    { role: "user", content: "Hello!" },
-    { role: "system", content: "This is an example message." },
-    { role: "user", content: "How are you?" },
-    {
-      role: "system",
-      content:
-        "Random content goes here.aschasjcasjdkhvbdkasjvbkdsjavbkjdsavbdskajvbdskjhvbdskajvhksdhajvbkjhdsabvkjdsvbkljdsabvdskjvbkdslajvbkajdhsvbdskj,vbksdjavblkdsjbvsadlkjvbdkasjvbsdkj",
-    },
-    { role: "user", content: "Lorem ipsum dolor sit amet." },
-    { role: "user", content: "System message." },
-    { role: "system", content: "Hello!" },
-    { role: "user", content: "Random content goes here." },
-    { role: "system", content: "How are you?" },
-    { role: "system", content: "This is an example message." },
-    { role: "user", content: "System message." },
-    { role: "system", content: "Hello!" },
-    { role: "user", content: "Random content goes here." },
-    { role: "system", content: "How are you? `hjel`" },
-    {
-      role: "system",
-      content: "This is an example message. \n```rb \nputs 'Hello world'\n```",
-    },
-  ]);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
+  const [isLoadingResponse, setIsLoadingResponse] = useState(false);
+  const [sanitizedConversation, setSanitizedConversation] = useState([]);
   const [message, setMessage] = useState("");
+  const { getMessagesByChannel } = dbOperations;
 
   const selectedModel = {
     name: "GPT-4",
@@ -44,33 +23,72 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (bottomOfChatRef.current) {
-      bottomOfChatRef.current.scrollIntoView({ behavior: "smooth" });
+    if (shouldScrollToBottom) {
+      if (bottomOfChatRef.current) {
+        scrollToBottom(bottomOfChatRef);
+      }
+      setShouldScrollToBottom(false);
     }
-  }, [conversation]);
+  }, [
+    shouldScrollToBottom,
+    bottomOfChatRef.current,
+    isLoadingResponse,
+    sanitizedConversation,
+  ]);
+
+  const sanitizeConversation = (messages) => {
+    const sanitizedMessages = [];
+    messages.forEach((message) => {
+      const role = message.user ? "user" : "system";
+      const sanitizedMessage = { content: message.message, role: role };
+      sanitizedMessages.push(sanitizedMessage);
+    });
+    setSanitizedConversation(sanitizedMessages);
+    setShouldScrollToBottom(true);
+  };
+
+  const fetchMessages = async (id) => {
+    const messages = await getMessagesByChannel(id);
+    sanitizeConversation(messages);
+  };
+
+  useEffect(() => {
+    if (channelId) {
+      fetchMessages(channelId);
+    } else {
+      sanitizedConversation.length !== 0 && setSanitizedConversation([]);
+    }
+  }, [channelId]);
 
   return (
     <div className="relative h-full flex flex-col overflow-hidden w-11/12">
       <div className="overflow-scroll h-full">
-        {!showEmptyChat && conversation.length > 0 && (
+        {!channelId ? (
+          <NewChat />
+        ) : (
           <div className="flex flex-col items-center text-sm">
-            {conversation.map((message, index) => (
+            {sanitizedConversation.map((message, index) => (
               <Message key={index} message={message} />
             ))}
+            {isLoadingResponse && <Message isLoading={true} />}
             <div className="w-full h-32 md:h-48 flex-shrink-0"></div>
-            <div ref={bottomOfChatRef}></div>
           </div>
         )}
-        {showEmptyChat && <NewChat />}
+        <div ref={bottomOfChatRef}></div>
       </div>
       <Footer
         message={message}
         setMessage={setMessage}
-        isLoading={isLoading}
-        errorMessage={errorMessage}
+        channelId={channelId}
+        setChannelId={setChannelId}
+        sanitizedConversation={sanitizedConversation}
+        setSanitizedConversation={setSanitizedConversation}
+        setIsLoadingResponse={setIsLoadingResponse}
+        isLoadingResponse={isLoadingResponse}
+        fetchMessages={fetchMessages}
       />
     </div>
   );
 };
 
-export default Chat;
+export default Conversation;
