@@ -6,10 +6,24 @@
   background-color: #3a1f5c;
 }
 
-body {
-  -ms-overflow-style: none !important;
-  scrollbar-width: 0 !important;
+/* For Internet Explorer and Edge */
+body::-ms-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
 }
+
+/* For Firefox */
+body {
+  scrollbar-width: none !important; 
+  -ms-overflow-style: none !important; /* Backward compatibility */
+}
+
+/* For Chrome, Safari, and Opera */
 body::-webkit-scrollbar {
   display: none !important;
+}
+
+/* Ensure proper scrolling for Safari */
+body {
+-webkit-overflow-scrolling: touch;
 }
