@@ -6,10 +6,7 @@
   background-color: #3a1f5c;
 }
 
-body {
-  -ms-overflow-style: none !important;
-  scrollbar-width: 0 !important;
-}
-body::-webkit-scrollbar {
-  display: none !important;
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
