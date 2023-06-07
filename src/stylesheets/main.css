@@ -10,3 +10,8 @@
   width: 0;
   height: 0;
 }
+
+::-ms-scrollbar {
+  width: 0;
+  height: 0;
+}
